@@ -1,0 +1,4 @@
+[deps]
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
+MORFE = "5d3630f1-b769-440d-b6a6-faf39c53b66e"
+MORFEFerrite = "1d4622c9-196a-4501-8c0e-eb226f4bd3c4"
