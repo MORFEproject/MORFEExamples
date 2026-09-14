@@ -23,7 +23,7 @@ The setup only needs to be performed once. The generated Manifest.toml is local 
 4. Check the extension settings and make sure under Windows that the Julia executable in your `C:` drive is correctly specified under **Julia: Executable Path**.
 5. Download the `MORFEExample` folder.
 6. Open the `MORFEExample` folder in VSCode.
-7. Run `julia setup.jl` in the terminal.#
+7. Run `julia setup.jl` in the terminal.
 8. Open the Jupyter notebook example and choose as the kernel `MORFEExamples`
 ![alt text](Assets_readme/juypter-kernel.png)
 9. Enjoy!
