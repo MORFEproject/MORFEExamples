@@ -7,6 +7,9 @@ Manifest.toml
 # READMEs quote and what the website's figures are built from.
 */results/data/*.jls
 
+# ParaView files, rewritten by the micromirror notebook on every run.
+dual_axis_mems_micromirror/results/paraview/
+
 # macOS directory metadata
 .DS_Store
 */.DS_Store
