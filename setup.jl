@@ -16,6 +16,7 @@ Pkg.add("Dates")
 Pkg.add("Symbolics")
 Pkg.add("StaticArrays")
 Pkg.add("WriteVTK")  # ParaView output (dual_axis_mems_micromirror)
+Pkg.add("Ferrite")   # hand-written finite element terms (writing_a_finite_element_nonlinearity)
 
 Pkg.instantiate()
 
