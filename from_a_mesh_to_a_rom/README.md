@@ -10,8 +10,7 @@ The example is intentionally limited to the public, physics-independent API:
 ```julia
 order = 9
 case = SVK.mechanical_model("clamped_clamped_beam.msh"; ...)
-(; model, spectral, meta) = build_model(case;
-    master = [1], expansion_order = order)
+(; model, spectral, meta) = build_model(case; master = [1])
 W, R = parametrise(model, spectral, order;
     resonance = ResonanceConfig(style = :complex_normal_form, tol = 0.05))
 
@@ -90,7 +89,7 @@ each forcing appends a conjugate pair of external states with eigenvalues ±iΩ,
 `N_EXT = 2`, and `parametrise` stays the same physics-independent call as above.
 
 ```julia
-(; model, spectral, meta) = build_model(case; master = [1], expansion_order = order,
+(; model, spectral, meta) = build_model(case; master = [1],
     forcing = SVK.HarmonicForcing(mode = 1, amplitude = 0.03))
 W, R = parametrise(model, spectral, order;
     resonance = ResonanceConfig(style = :complex_normal_form, tol = 0.05))
@@ -102,7 +101,7 @@ occupies reduced coordinates `ROM+2k-1`, `ROM+2k`:
 
 ```julia
 ω₁ = abs(SVK.eigenfrequencies(case; nev = 10)[1])   # pair p sits at entries 2p-1, 2p
-(; model, spectral, meta) = build_model(case; master = [1], expansion_order = order,
+(; model, spectral, meta) = build_model(case; master = [1],
     forcing = [SVK.HarmonicForcing(mode = 1, amplitude = 0.03),
                SVK.HarmonicForcing(mode = 1, amplitude = 0.01, Ω = 3.0 * ω₁)])
 ```

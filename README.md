@@ -41,7 +41,7 @@ Notebooks are committed with their outputs cleared, so executing one is the firs
 | [`symbolic_full-order_model/`](symbolic_full-order_model/) | A full-order model written as symbolic equations rather than assembled by a FEM backend | [Symbolic models](https://morfeproject.github.io/tutorials/symbolics_ext.html) |
 | [`from_a_mesh_to_a_rom/`](from_a_mesh_to_a_rom/) | Mesh to ROM for a clamped–clamped beam, and its **backbone curve** read off the reduced dynamics | [Structural SVK](https://morfeproject.github.io/tutorials/structural_svk.html) |
 | [`karman_vortex_street/`](karman_vortex_street/) | A 57,860-DOF Navier–Stokes flow reduced to a single Stuart–Landau equation across a Hopf bifurcation | [Kármán vortex street](https://morfeproject.github.io/tutorials/karman.html) |
-| [`writing_a_finite_element_nonlinearity/`](writing_a_finite_element_nonlinearity/) | The beam's geometric nonlinearity written by hand with Ferrite, first as a closure, then through the element-level interface that lets MORFE batch the mesh loop | [Writing a finite element nonlinearity](https://morfeproject.github.io/tutorials/fe_nonlinearity.html) |
+| [`writing_a_finite_element_nonlinearity/`](writing_a_finite_element_nonlinearity/) | The beam's geometric nonlinearity written by hand with Ferrite, first as a closure, then through the element-level interface that lets MORFE assemble each monomial in a single pass over the mesh | [Writing a finite element nonlinearity](https://morfeproject.github.io/tutorials/fe_nonlinearity.html) |
 
 The first three need only MORFE and run in seconds. The others use the Ferrite
 backend in MORFEFerrite and solve a real finite-element model: the beam takes about a

@@ -74,16 +74,16 @@ and collect them in `modes.pvd`, whose time value is the mode number `p`.
 Constrained degrees of freedom are zero.
 """
 function write_modes(dir, case, sp)
-    dh = case.info.dh
+    dof_handler = case.info.dof_handler
     pvd = paraview_collection(joinpath(dir, "modes"))
     for p in 1:(length(sp.eigenvalues) ÷ 2)
         ϕ = mode_shape(sp, p)
-        u = zeros(Ferrite.ndofs(dh))
-        for (dof, row) in case.info.free_to_local
+        u = zeros(Ferrite.ndofs(dof_handler))
+        for (dof, row) in case.info.dof_to_free
             u[dof] = ϕ[row]
         end
-        Ferrite.VTKGridFile(joinpath(dir, "mode_$(lpad(p, 2, '0'))"), dh) do vtk
-            Ferrite.write_solution(vtk, dh, u)
+        Ferrite.VTKGridFile(joinpath(dir, "mode_$(lpad(p, 2, '0'))"), dof_handler) do vtk
+            Ferrite.write_solution(vtk, dof_handler, u)
             pvd[p] = vtk
         end
     end

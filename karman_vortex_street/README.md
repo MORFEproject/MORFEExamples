@@ -14,7 +14,7 @@ order = 3 # Change to 9 for the reference calculation.
 case = NSE.fluid_model("cylinder_flow.msh"; Re = 49.03)
 spectrum = NSE.solve_hopf_eigenproblem(case.B; ...)
 (; model, spectral, meta) = build_model(case, spectrum;
-    master = master, outer = outer, expansion_order = order, scale = 1e-2)
+    master = master, outer = outer, scale = 1e-2)
 W, R = parametrise(model, spectral, order;
     resonance = ResonanceConfig(style = :complex_normal_form, tol_relative = 0.1,
         outer_targets = true))

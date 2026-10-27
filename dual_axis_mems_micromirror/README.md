@@ -47,8 +47,7 @@ out-of-plane displacement of its face.
 ```julia
 case = SVK.mechanical_model(grid; material = SVK.CubicCrystal(...), ...)
 sp = SVK.spectrum(case; nev)
-(; model, spectral, meta) = build_model(case; master = [p], spectrum = sp,
-    expansion_order = order)
+(; model, spectral, meta) = build_model(case; master = [p], spectrum = sp)
 W, R = parametrise(model, spectral, order;
     resonance = ResonanceConfig(style = :complex_normal_form, tol_relative = 0.05))
 θ = observable_polynomial(W, θx)   # mirror tilt, a linear functional of W
