@@ -20,9 +20,9 @@
 #   julia benchmark.jl    # on an otherwise idle machine
 #
 # Optional overrides: MORFE_BENCH_ORDERS="2=>19,3=>9,4=>6,5=>5"  MORFE_BENCH_REALISATIONS=3
-# MORFE_BENCH_MESHES=medium,large,extra-large (default: medium)  MORFE_BENCH_ROMS=2,3, and
-# MORFE_BENCH_PROJECT=<environment> to benchmark, for instance, local MORFE and MORFEFerrite
-# checkouts added with Pkg.develop. By default the script activates the repository's shared
+# MORFE_BENCH_MESHES=small,medium,large,extra-large (default: medium)  MORFE_BENCH_ROMS=2,3,
+# MORFE_BENCH_OUT=<csv path>, and MORFE_BENCH_PROJECT=<environment> to benchmark, for instance,
+# local MORFE and MORFEFerrite checkouts added with Pkg.develop. By default the script activates the repository's shared
 # environment itself; run `julia setup.jl` from the repository root once beforehand.
 #
 # Writes results/data/single_pass_benchmark.csv, one row per (mesh, n, route, monomial):
@@ -37,8 +37,10 @@ using MORFE.MultilinearTerms: build_multilinear_terms_cache, compute_multilinear
 const SVK = MORFEFerrite.StructuralSVK
 
 # Elements along the length (1000), the thickness (10) and the width (24) of the beam, with
-# quadratic Lagrange displacements; 40 x 3 x 1 is the 4977-dof mesh of from_a_mesh_to_a_rom.
-const ALL_MESHES = ["medium" => (60, 4, 2), "large" => (120, 6, 3), "extra-large" => (160, 8, 4)]
+# quadratic Lagrange displacements; small, 40 x 3 x 1, has the 4977 dofs of the mesh of
+# from_a_mesh_to_a_rom, on which the tutorial page draws this kernel's costs.
+const ALL_MESHES = ["small" => (40, 3, 1), "medium" => (60, 4, 2), "large" => (120, 6, 3),
+    "extra-large" => (160, 8, 4)]
 # Reduced dimension n => expansion order, chosen so that every multiindex set holds about
 # 200 monomials: 209, 219, 209 and 251 (of which the solver assembles 108, 122, 107 and 132;
 # the closure then traverses the mesh 16003, 4778, 1697 and 1409 times).
@@ -148,7 +150,8 @@ end
 
 println("realisations $REALISATIONS, meshes ", join(first.(MESHES), ", "), ", ",
     join(("n = $n to order $(ORDERS[n])" for n in ROMS), ", "))
-out = joinpath(@__DIR__, "results", "data", "single_pass_benchmark.csv")
+out = get(ENV, "MORFE_BENCH_OUT",
+    joinpath(@__DIR__, "results", "data", "single_pass_benchmark.csv"))
 mkpath(dirname(out))
 compiled = Set{Int}()
 open(out, "w") do io

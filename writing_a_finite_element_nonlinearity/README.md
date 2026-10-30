@@ -11,7 +11,9 @@ by hand, with Ferrite.jl, in two ways:
    every monomial, and every call traverses the whole mesh.
 2. **Through the element-level interface**: a `FEMMultilinearMap` subtype that describes
    one cell at a time. MORFE then runs the mesh loop itself and assembles every evaluation
-   of a monomial in a single traversal.
+   of a monomial in a single traversal. The term opts into flux summation (`fem_flux_zero`,
+   `flux_qp`, `contract_qp!`), so at each quadrature point MORFE sums the stresses of all
+   factorisations of both terms and tests them once against the shape functions.
 
 The physics is the same few lines in both routes. They are the quadratic and cubic parts
 of the first Piola–Kirchhoff stress, `P2(a, b)` and `P3(a, b, c)`, polarised so that they
@@ -58,11 +60,19 @@ tutorial page draws it.
 
 `benchmark.jl` measures the single-pass assembly that the MORFE.jl paper reports. By default it uses the
 medium mesh, which is what the paper shows; the larger ones are optional
-(`MORFE_BENCH_MESHES=medium,large,extra-large`). All three are generated, 1000 × 10 × 24, with
-quadratic Lagrange displacements:
+(`MORFE_BENCH_MESHES=medium,large,extra-large`). The small one has the 4977 DOFs of the mesh of
+`from_a_mesh_to_a_rom`, and gives the tutorial page the costs of MORFEFerrite's kernel:
+
+```bash
+MORFE_BENCH_MESHES=small MORFE_BENCH_ROMS=2 MORFE_BENCH_ORDERS="2=>9" \
+    MORFE_BENCH_OUT=benchmark.v2.csv julia benchmark.jl
+```
+
+All four are generated, 1000 × 10 × 24, with quadratic Lagrange displacements:
 
 | Mesh | Elements | Free DOFs |
 | ---- | -------- | --------- |
+| small | 40 × 3 × 1 | 4,977 |
 | medium | 60 × 4 × 2 | 16,065 |
 | large | 120 × 6 × 3 | 65,247 |
 | extra-large | 160 × 8 × 4 | 146,421 |
@@ -108,6 +118,7 @@ Overrides:
 
 - `MORFE_BENCH_MESHES=medium`
 - `MORFE_BENCH_ROMS=2,3`
+- `MORFE_BENCH_OUT=<csv path>`, to write elsewhere than `results/data/single_pass_benchmark.csv`
 - `MORFE_BENCH_ORDERS="2=>19,3=>9,4=>6,5=>5"`
 - `MORFE_BENCH_REALISATIONS=3`
 - `MORFE_BENCH_PROJECT=<environment>`, to benchmark local checkouts added with `Pkg.develop`
